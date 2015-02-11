@@ -42,34 +42,84 @@ phenotypes
 phenotypes <- subset(phenotypes, Placeholder != "No Pot" )
 phenotypes <- subset(phenotypes, Placeholder != "Reference" )
 phenotypes
-phenotypes2
-dim(phenotypes)
 
+################
+# I really hesitate to do this line by line, but I think that it is necessary not to get 
+# confused
+################
 head(location)
-location
+head(phenotypes)
 
-as.numeric(pheno$Row)
-pheno$Row
+# block and plot are the same between the dataframes
+# column and row are defined differently in the two datasets
+# I will use an X, Y grid to convert between the two
+# The phenotypes data frame already has an X, Y grid of columns (1-14) and rows (1-6)
+# this is starting at column 1, row 1 in the upper left hand corner of an image
+# this corresponds to the Southwest corner of each plot in AtSha_col2014plotdesign.png
+# first I will deal with the rows
+# I thought initially of changing 2 things at once, hence the ifelse, but thought it 
+# also confusing without looking at AtSha_col2014plotdesign.png, so here is my attempt
 
+#copy column to change in place
+# make numeric so the ifelse will change correctly
+location$Row2 <- as.numeric(location$Row)
 head(location)
-location$Row2 <- location$Row
-location$Row <- as.numeric(location$Row2)
-head(location, 50)
-dim(location)
-dim(phenotypes)
+
+location$Row2  <- with(location, ifelse(Row == 'A', 4, Row2))
+location$Row2
+location$Row2  <- with(location, ifelse(Row == 'B', 5, Row2))
+location$Row2  <- with(location, ifelse(Row == 'C', 6, Row2))
+location$Row2  <- with(location, ifelse(Row == 'D', 3, Row2))
+location$Row2  <- with(location, ifelse(Row == 'E', 2, Row2))
+location$Row2  <- with(location, ifelse(Row == 'F', 1, Row2))
+location$Row2
+################
+################
+
+################
+################
+# columns
+################
+################
+location$Column2 <- location$Column
+head(location)
+location$Column2
+str(location)
+
+location$Column2  <- with(location, ifelse(Column == 15, 14, Column2))
+location$Column2
+location$Column2  <- with(location, ifelse(Column == 16, 13, Column2))
+location$Column2  <- with(location, ifelse(Column == 17, 12, Column2))
+location$Column2  <- with(location, ifelse(Column == 18, 11, Column2))
+location$Column2  <- with(location, ifelse(Column == 19, 10, Column2))
+location$Column2  <- with(location, ifelse(Column == 20, 9, Column2))
+location$Column2  <- with(location, ifelse(Column == 21, 8, Column2))
+location$Column2  <- with(location, ifelse(Column == 22, 7, Column2))
+location$Column2  <- with(location, ifelse(Column == 23, 6, Column2))
+location$Column2  <- with(location, ifelse(Column == 24, 5, Column2))
+location$Column2  <- with(location, ifelse(Column == 25, 4, Column2))
+location$Column2  <- with(location, ifelse(Column == 26, 3, Column2))
+location$Column2  <- with(location, ifelse(Column == 27, 2, Column2))
+location$Column2  <- with(location, ifelse(Column == 28, 1, Column2))
+location$Column2
+head(location)
+head(phenotypes)
 
 
 phenotypes$mergecol <-  paste(phenotypes$Block, phenotypes$Plot, phenotypes$Column, phenotypes$Row, sep="_")
-location$mergecol   <- paste(location$Block, location$Plot, location$Column, location$Row, sep="_")
+location$mergecol   <- paste(location$Block, location$Plot,location$Column2, location$Row2 , sep="_")
 
-
+dim(phenotypes)
+dim(location)
+head(location)
+head(phenotypes)
 
 
 
 
 ?merge
-merged <- merge(phenotypes, location, all.x = TRUE)
-head(merged, 30)
+merged <- merge(phenotypes, location, by = "mergecol")
+head(merged)
 
 head(merged)
 dim(merged)
