@@ -1,17 +1,15 @@
 #library(qtl)
 setwd("/Users/Cody_2/git.repos/NAM_CAM_FIELD/raw_data/phenotypic_data/")
 pheno <- read.csv("Amanjot_image_data_clean.csv", na.strings= "NA")
+pheno$Placeholder
+pheno
 
 setwd("/Users/Cody_2/git.repos/NAM_CAM_FIELD/experimental_notebook/")
 location <- read.csv("AtCol_Sha2014_plantlocation_clean.csv", na.strings = "NA")
-
+dim(pheno)
 str(pheno)
 str(location)
-
-pheno$Image
-test <- gsub("(BL)(\\d)(_)(PL)(\\d)(_)(C)(\\d+)(-)(\\d+)(.tif)",
-                    "\\1\\2\\3\\4", pheno$Image)
-
+dim(location)
 pheno$Block <- as.numeric(gsub("(BL)(\\d)(_)(PL)(\\d)(_)(C)(\\d+)(-)(\\d+)(.tif)",
                              "\\2", pheno$Image))
 pheno$Block
@@ -37,12 +35,12 @@ head(pheno)
 phenotypes <- pheno[,c(1:3,7:11,4:6)]
 head(phenotypes)
 phenotypes
-
+dim(phenotypes)
 ?subset
 phenotypes <- subset(phenotypes, Placeholder != "No Pot" )
 phenotypes <- subset(phenotypes, Placeholder != "Reference" )
-phenotypes
-
+dim(phenotypes)
+dim(location)
 ################
 # I really hesitate to do this line by line, but I think that it is necessary not to get 
 # confused
@@ -86,21 +84,21 @@ head(location)
 location$Column2
 str(location)
 
-location$Column2  <- with(location, ifelse(Column == 15, 14, Column2))
+location$Column2  <- with(location, ifelse(Column == 15, 1, Column2))
 location$Column2
-location$Column2  <- with(location, ifelse(Column == 16, 13, Column2))
-location$Column2  <- with(location, ifelse(Column == 17, 12, Column2))
-location$Column2  <- with(location, ifelse(Column == 18, 11, Column2))
-location$Column2  <- with(location, ifelse(Column == 19, 10, Column2))
-location$Column2  <- with(location, ifelse(Column == 20, 9, Column2))
-location$Column2  <- with(location, ifelse(Column == 21, 8, Column2))
-location$Column2  <- with(location, ifelse(Column == 22, 7, Column2))
-location$Column2  <- with(location, ifelse(Column == 23, 6, Column2))
-location$Column2  <- with(location, ifelse(Column == 24, 5, Column2))
-location$Column2  <- with(location, ifelse(Column == 25, 4, Column2))
-location$Column2  <- with(location, ifelse(Column == 26, 3, Column2))
-location$Column2  <- with(location, ifelse(Column == 27, 2, Column2))
-location$Column2  <- with(location, ifelse(Column == 28, 1, Column2))
+location$Column2  <- with(location, ifelse(Column == 16, 2, Column2))
+location$Column2  <- with(location, ifelse(Column == 17, 3, Column2))
+location$Column2  <- with(location, ifelse(Column == 18, 4, Column2))
+location$Column2  <- with(location, ifelse(Column == 19, 5, Column2))
+location$Column2  <- with(location, ifelse(Column == 20, 6, Column2))
+location$Column2  <- with(location, ifelse(Column == 21, 7, Column2))
+location$Column2  <- with(location, ifelse(Column == 22, 8, Column2))
+location$Column2  <- with(location, ifelse(Column == 23, 9, Column2))
+location$Column2  <- with(location, ifelse(Column == 24, 10, Column2))
+location$Column2  <- with(location, ifelse(Column == 25, 11, Column2))
+location$Column2  <- with(location, ifelse(Column == 26, 12, Column2))
+location$Column2  <- with(location, ifelse(Column == 27, 13, Column2))
+location$Column2  <- with(location, ifelse(Column == 28, 14, Column2))
 location$Column2
 head(location)
 head(phenotypes)
@@ -118,13 +116,28 @@ head(phenotypes)
 
 
 ?merge
-merged <- merge(phenotypes, location, by = "mergecol")
+merged <- merge(phenotypes, location, by = "mergecol", all.x = TRUE)
 head(merged)
 
-head(merged)
+head(merged, 100)
+tail(merged, 50)
+merged$Line
 dim(merged)
 tail(merged)
 merged
+
+setwd("/Users/Cody_2/git.repos/NAM_CAM_FIELD/raw_data/phenotypic_data/")
+write.table(merged, "genotype_phenotype_merged2.csv", sep = ",", row.names = FALSE)
+
+
+
+
+
+
+
+
+
+
 
 
 merged <- merged[,c(5,12:13,1:4,14:15,6:11)]
