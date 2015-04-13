@@ -10,6 +10,7 @@ dim(pheno)
 str(pheno)
 str(location)
 dim(location)
+
 pheno$Block <- as.numeric(gsub("(BL)(\\d)(_)(PL)(\\d)(_)(C)(\\d+)(-)(\\d+)(.tif)",
                              "\\2", pheno$Image))
 pheno$Block
@@ -111,9 +112,6 @@ dim(phenotypes)
 dim(location)
 head(location)
 head(phenotypes)
-
-
-
 
 ?merge
 merged <- merge(phenotypes, location, by = "mergecol", all.x = TRUE)
